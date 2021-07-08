@@ -1,3 +1,5 @@
 /.vscode
 
-/MDK-ARM
+MDK-ARM/Board_C_Develop
+
+MDK-ARM/.vscode
