@@ -1,8 +1,10 @@
 
 #include "bsp_can.h"
 
-static CAN_TxHeaderTypeDef  chassis_tx_message;
-static uint8_t              chassis_can_send_data[8];
+extern CAN_HandleTypeDef hcan1;
+extern CAN_HandleTypeDef hcan2;
+
+static CAN_TxHeaderTypeDef  tx_message;
 /**
   * @brief     CAN 设备初始化
   */
@@ -36,28 +38,22 @@ void can_device_init(){
   * @param     send_data: 发送数据指针，大小为 8 位
   */
 void write_can(uint8_t can_id, uint32_t send_id, uint8_t send_data[]){
-		CAN_TxHeaderTypeDef  tx_message;
+    
     uint32_t send_mail_box;
     tx_message.StdId = send_id;
     tx_message.IDE = CAN_ID_STD;
     tx_message.RTR = CAN_RTR_DATA;
     tx_message.DLC = 0x08;
-	
-		tx_message.TransmitGlobalTime = DISABLE;
-
     switch(can_id){
-        case(1):				
-					if (HAL_CAN_AddTxMessage(&hcan1, &tx_message, send_data, &send_mail_box) == HAL_OK){
-					while (HAL_CAN_IsTxMessagePending(&hcan1, send_mail_box));
-				}
+        case(1):
+        HAL_CAN_AddTxMessage(&hcan1, &tx_message, send_data, &send_mail_box);
         break;
         case(2):
-					if (HAL_CAN_AddTxMessage(&hcan1, &tx_message, send_data, &send_mail_box) == HAL_OK){
-					while (HAL_CAN_IsTxMessagePending(&hcan1, send_mail_box));
-				}
+        HAL_CAN_AddTxMessage(&hcan2, &tx_message, send_data, &send_mail_box);
         break;
         default:
         break;
-    }    
-}
+    }
+    
 
+}

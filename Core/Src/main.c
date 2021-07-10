@@ -21,7 +21,9 @@
 #include "main.h"
 #include "cmsis_os.h"
 #include "can.h"
+#include "crc.h"
 #include "dma.h"
+#include "spi.h"
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
@@ -30,9 +32,9 @@
 /* USER CODE BEGIN Includes */
 
 #include "bsp_can.h"
-
-
-
+#include "bsp_spi.h"
+#include "bsp_uart.h"
+#include "bsp_delay.h"
 
 /* USER CODE END Includes */
 
@@ -103,9 +105,10 @@ int main(void)
   MX_USART1_UART_Init();
   MX_USART6_UART_Init();
   MX_USART3_UART_Init();
+  MX_SPI1_Init();
+  MX_CRC_Init();
   /* USER CODE BEGIN 2 */
 	can_device_init();
-	
   /* USER CODE END 2 */
 
   /* Call init function for freertos objects (in freertos.c) */
