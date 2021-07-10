@@ -4,6 +4,9 @@
 #include "main.h"
 extern void can_filter_init(void);
 
+extern CAN_HandleTypeDef hcan1;
+extern CAN_HandleTypeDef hcan2;
+
 
 //#define CHASSIS_CAN hcan1
 //#define GIMBAL_CAN hcan2

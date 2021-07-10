@@ -113,15 +113,15 @@ void MX_FREERTOS_Init(void) {
   GIMBALHandle = osThreadCreate(osThread(GIMBAL), NULL);
 
   /* definition and creation of CHASSIS */
-  osThreadDef(CHASSIS, chassis_task, osPriorityIdle, 0, 128);
+  osThreadDef(CHASSIS, chassis_task, osPriorityNormal, 0, 256);
   CHASSISHandle = osThreadCreate(osThread(CHASSIS), NULL);
 
   /* definition and creation of SHOOT */
-  osThreadDef(SHOOT, shoot_task, osPriorityIdle, 0, 128);
+  osThreadDef(SHOOT, shoot_task, osPriorityLow, 0, 128);
   SHOOTHandle = osThreadCreate(osThread(SHOOT), NULL);
 
   /* definition and creation of REFEREE_UART */
-  osThreadDef(REFEREE_UART, referee_uart_task, osPriorityIdle, 0, 128);
+  osThreadDef(REFEREE_UART, referee_uart_task, osPriorityLow, 0, 128);
   REFEREE_UARTHandle = osThreadCreate(osThread(REFEREE_UART), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
