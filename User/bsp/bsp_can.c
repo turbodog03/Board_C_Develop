@@ -46,14 +46,15 @@ void write_can(uint8_t can_id, uint32_t send_id, uint8_t send_data[]){
 		tx_message.TransmitGlobalTime = DISABLE;
 
     switch(can_id){
-        case(1):
-       // HAL_CAN_AddTxMessage(&hcan1, &tx_message, send_data, &send_mail_box);
-				if (HAL_CAN_AddTxMessage(&hcan1, &tx_message, send_data, &send_mail_box) == HAL_OK){
+        case(1):				
+					if (HAL_CAN_AddTxMessage(&hcan1, &tx_message, send_data, &send_mail_box) == HAL_OK){
 					while (HAL_CAN_IsTxMessagePending(&hcan1, send_mail_box));
 				}
         break;
         case(2):
-        HAL_CAN_AddTxMessage(&hcan2, &tx_message, send_data, &send_mail_box);
+					if (HAL_CAN_AddTxMessage(&hcan1, &tx_message, send_data, &send_mail_box) == HAL_OK){
+					while (HAL_CAN_IsTxMessagePending(&hcan1, send_mail_box));
+				}
         break;
         default:
         break;

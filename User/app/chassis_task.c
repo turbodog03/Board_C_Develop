@@ -7,18 +7,22 @@
 //#include "FreeRTOS.h"
 //#include "task.h"
 
-#include "sweep_wave.h"
-
-int16_t current_tx[24995];
+//#include "sweep_wave.h"
+//#include "sweep_wave_250_50s_0_6Hz.h"
+//#include "sweep_wave_250_50s_0_6Hz_5ms.h"
+#include "sweep_wave_250_50s_0_6Hz_3.h"
+int max_index = sizeof(current)/sizeof(float) ;
 uint8_t data[8];
 int16_t sent_current =0;
+
+
 void chassis_task(void const *pvParameters){
 	
-	for(int i = 0;i<24995;i++)
-	{
-	current_tx[i] = 5*current[i];
-	}
-
+//	for(int i = 0;i<max_index-1;i++)
+//	{
+//	current_tx[i] = current[i];
+//	}
+		current[max_index] = 0;
 
 	uint32_t chassis_wake_time = osKernelSysTick();
 //TickType_t lastWakeTime;
@@ -30,27 +34,27 @@ void chassis_task(void const *pvParameters){
 	static int count = 0;
 	
 
-  data[0] = current_tx[count] >> 8;
-  data[1] = current_tx[count];
-  data[2] = current_tx[count] >> 8;
-  data[3] = current_tx[count];
-  data[4] = current_tx[count] >> 8;
-  data[5] = current_tx[count];
-  data[6] = current_tx[count] >> 8;
-  data[7] = current_tx[count];
+  data[0] = (int16_t) (1*current[count]) >> 8;
+  data[1] = (int16_t) (1*current[count]);
+  data[2] = (int16_t) (1*current[count])>> 8;
+  data[3] = (int16_t) (1*current[count]);
+  data[4] = (int16_t) (1*current[count])>> 8;
+  data[5] = (int16_t) (1*current[count]);
+  data[6] = (int16_t) (1*current[count]) >> 8;
+  data[7] = (int16_t) (1*current[count]);
 	
-	sent_current = current_tx[count];
+	sent_current = (1*current[count]);
 
 		write_can(CHASSIS_CAN,CAN_CHASSIS_ID,data);
 
-	if(count >= 24995){
-		count = 0;
-		}
-	else{
+	if(count < max_index){
 		count++;
 		}
+	else{
+		count = max_index;
+		}
 	
-	osDelayUntil(&chassis_wake_time, 10);
+	osDelayUntil(&chassis_wake_time, 5);
 //	osThreadTerminate(NULL);
 	}
 	
